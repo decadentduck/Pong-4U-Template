@@ -77,9 +77,9 @@
             this.player1Label.ForeColor = System.Drawing.Color.White;
             this.player1Label.Location = new System.Drawing.Point(28, 2);
             this.player1Label.Name = "player1Label";
-            this.player1Label.Size = new System.Drawing.Size(128, 18);
+            this.player1Label.Size = new System.Drawing.Size(98, 18);
             this.player1Label.TabIndex = 2;
-            this.player1Label.Text = "Player 1:  0";
+            this.player1Label.Text = "BLUE :  0";
             // 
             // player2Label
             // 
@@ -89,9 +89,9 @@
             this.player2Label.ForeColor = System.Drawing.Color.White;
             this.player2Label.Location = new System.Drawing.Point(430, 2);
             this.player2Label.Name = "player2Label";
-            this.player2Label.Size = new System.Drawing.Size(128, 18);
+            this.player2Label.Size = new System.Drawing.Size(98, 18);
             this.player2Label.TabIndex = 3;
-            this.player2Label.Text = "Player 2:  0";
+            this.player2Label.Text = "RED  :  0";
             // 
             // Form1
             // 

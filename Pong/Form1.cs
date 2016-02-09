@@ -142,14 +142,14 @@ namespace Pong
             newGameOk = true;
             SetParameters();
             
-            Graphics formGraphics = this.CreateGraphics();            SolidBrush drawBrush = new SolidBrush(Color.White);            Font = new Font("Courier New", 12);
+            Graphics formGraphics = this.CreateGraphics();            SolidBrush drawBrush = new SolidBrush(Color.White);            Font drawfont = new Font("Courier New", 30);
             startLabel.Visible = false;
             Refresh();
             
             //countdown to start of game
-            for (int i = 3; i <= 1; i-- ) 
+            for (int i = 3; i > 0; i-- ) 
             {
-                formGraphics.DrawString(Convert.ToString(i), Font, drawBrush, this.Height/2, this.Width/2);
+                formGraphics.DrawString(Convert.ToString(i), drawfont, drawBrush, (this.Width/2) - 17, (this.Height/2) - 45);
                 Thread.Sleep(1000);
                 this.Refresh();
             }
@@ -157,9 +157,7 @@ namespace Pong
             gameUpdateLoop.Start();
             newGameOk = false;
         }
-
-
-
+  
         /// <summary>
         /// sets the ball and paddle positions for game start
         /// </summary>
@@ -173,8 +171,8 @@ namespace Pong
 
                 //set label, score variables, and ball position
                 player1Score = player2Score = 0;
-                player1Label.Text = "Player 1:  " + player1Score;
-                player2Label.Text = "Player 2:  " + player2Score;
+                player1Label.Text = "BLUE :  " + player1Score;
+                player2Label.Text = "RED :  " + player2Score;
 
                 paddle1Y = paddle2Y = this.Height / 2 - PADDLE_LENGTH / 2;
 
@@ -208,11 +206,11 @@ namespace Pong
 
             if (ballMoveDown == true)
             {
-                ballY = ballY - BALL_SPEED;
+                ballY = ballY + BALL_SPEED;
             }
             else
             {
-                ballY = ballY + BALL_SPEED;
+                ballY = ballY - BALL_SPEED;
             }
             #endregion
 
@@ -220,20 +218,20 @@ namespace Pong
 
             if (aKeyDown == true && paddle1Y > 0)
             {
-                paddle1Y = paddle1Y + PADDLE_SPEED;
+                paddle1Y = paddle1Y - PADDLE_SPEED;
             }
             if(zKeyDown == true && paddle1Y < this.Height)
             {
-                paddle1Y = paddle1Y - PADDLE_SPEED;
+                paddle1Y = paddle1Y + PADDLE_SPEED;
             }
    
             if(jKeyDown == true && paddle2Y > 0)
             {
-                paddle2Y = paddle2Y + PADDLE_SPEED;
+                paddle2Y = paddle2Y - PADDLE_SPEED;
             }
             if(mKeyDown == true && paddle2Y < this.Height)
             {
-                paddle2Y = paddle2Y - PADDLE_SPEED;
+                paddle2Y = paddle2Y + PADDLE_SPEED;
             }
             #endregion
 
@@ -244,9 +242,10 @@ namespace Pong
                 ballMoveDown = true;
                 player.Play();
             }
-            else if (ballY > this.Height - BALL_SIZE)
+            else if (ballY > (this.Height - BALL_SIZE))
             {
                 ballMoveDown = false;
+                player.Play();
             }
 
             #endregion
@@ -274,36 +273,34 @@ namespace Pong
             {
                 player.Play();
                 player2Score++;
-                player2Label.Text = Convert.ToString (player2Score);
+                player2Label.Text = "RED: " + Convert.ToString (player2Score);
                 Refresh();
 
-                if(player2Score ==gameWinScore)
+                if(player2Score == gameWinScore)
                 {
-                    GameOver("player 2");
+                    GameOver("BLUE!");
                 }
                 else
                 {
                     SetParameters();
                 }
-
             }
             
             if (ballX > this.Width - BALL_SIZE )
             {
                 player.Play();
                 player1Score++;
-                player2Label.Text = Convert.ToString(player1Score);
+                player1Label.Text = "BLUE: " + Convert.ToString(player1Score);
                 Refresh();
 
                 if (player1Score == gameWinScore)
                 {
-                    GameOver("player 1");
+                    GameOver("RED!");
                 }
                 else
                 {
                     SetParameters();
                 }
-
             }
 
             #endregion
@@ -319,9 +316,11 @@ namespace Pong
         private void GameOver(string winner)
         {
             newGameOk = true;
-            
+            startLabel.Visible = true;          
             gameUpdateLoop.Stop();
-            startLabel.Text = "Game Over /nPlayer 2 wins!";
+            
+            startLabel.Text = "SUCK IT " + winner ;
+            Refresh();
             Thread.Sleep(2000);
             startLabel.Text = "Play Again?";
 
@@ -334,9 +333,11 @@ namespace Pong
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
+            drawBrush.Color = Color.Blue;
             e.Graphics.FillRectangle(drawBrush, PADDLE_EDGE, paddle1Y, PADDLE_WIDTH, PADDLE_LENGTH);
+            drawBrush.Color = Color.Red; 
             e.Graphics.FillRectangle(drawBrush, (this.Width - PADDLE_WIDTH - PADDLE_EDGE), paddle2Y, PADDLE_WIDTH, PADDLE_LENGTH);
-            
+            drawBrush.Color = Color.Plum;
             e.Graphics.FillRectangle(drawBrush, ballX, ballY, BALL_SIZE, BALL_SIZE);
         }
 
