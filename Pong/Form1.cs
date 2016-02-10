@@ -56,10 +56,14 @@ namespace Pong
         Boolean aKeyDown, zKeyDown, jKeyDown, mKeyDown;
 
         //game winning score
-        int gameWinScore = 2;
+        int gameWinScore = 5;
 
         //brush for paint method
         SolidBrush drawBrush = new SolidBrush(Color.White);
+
+        Boolean ballRed = false;
+        int redWallX = 0;
+        int blueWallX = 0;
 
         #endregion
 
@@ -142,14 +146,14 @@ namespace Pong
             newGameOk = true;
             SetParameters();
             
-            Graphics formGraphics = this.CreateGraphics();            SolidBrush drawBrush = new SolidBrush(Color.White);            Font drawfont = new Font("Courier New", 30);
+            Graphics formGraphics = this.CreateGraphics();            SolidBrush theBrush = new SolidBrush(Color.Black);            Font drawfont = new Font("Courier New", 35);
             startLabel.Visible = false;
             Refresh();
             
             //countdown to start of game
             for (int i = 3; i > 0; i-- ) 
             {
-                formGraphics.DrawString(Convert.ToString(i), drawfont, drawBrush, (this.Width/2) - 17, (this.Height/2) - 45);
+                formGraphics.DrawString(Convert.ToString(i), drawfont, theBrush, (this.Width/2) - 16, (this.Height/2) - 63);
                 Thread.Sleep(1000);
                 this.Refresh();
             }
@@ -171,10 +175,12 @@ namespace Pong
 
                 //set label, score variables, and ball position
                 player1Score = player2Score = 0;
-                player1Label.Text = "BLUE :  " + player1Score;
-                player2Label.Text = "RED :  " + player2Score;
+                player1Label.Text = "RED :  " + player1Score;
+                player2Label.Text = "BLUE :  " + player2Score;
 
                 paddle1Y = paddle2Y = this.Height / 2 - PADDLE_LENGTH / 2;
+                redWallX = 0;
+                blueWallX = 0;
 
             }
             
@@ -191,7 +197,7 @@ namespace Pong
         {
             //sound player to be used for all in game sounds initially set to collision sound
             SoundPlayer player = new SoundPlayer();
-            player = new SoundPlayer(Properties.Resources.collision);
+            player = new SoundPlayer(Properties.Resources.Loud_Bang);
 
             #region update ball position
             
@@ -220,7 +226,7 @@ namespace Pong
             {
                 paddle1Y = paddle1Y - PADDLE_SPEED;
             }
-            if(zKeyDown == true && paddle1Y < this.Height)
+            if(zKeyDown == true && paddle1Y < this.Height - PADDLE_LENGTH)
             {
                 paddle1Y = paddle1Y + PADDLE_SPEED;
             }
@@ -229,7 +235,7 @@ namespace Pong
             {
                 paddle2Y = paddle2Y - PADDLE_SPEED;
             }
-            if(mKeyDown == true && paddle2Y < this.Height)
+            if(mKeyDown == true && paddle2Y < this.Height - PADDLE_LENGTH)
             {
                 paddle2Y = paddle2Y + PADDLE_SPEED;
             }
@@ -256,11 +262,13 @@ namespace Pong
             {
                 player.Play();
                 ballMoveRight = true;
+                ballRed = true;
             }
             else if (ballY > paddle2Y && ballY < paddle2Y + PADDLE_LENGTH && ballX + BALL_SIZE > this.Width - PADDLE_EDGE - PADDLE_WIDTH / 2) // right paddle collision
             {
                 player.Play();
                 ballMoveRight = false;
+                ballRed = false;
             }
 
             #endregion
@@ -273,12 +281,13 @@ namespace Pong
             {
                 player.Play();
                 player2Score++;
-                player2Label.Text = "RED: " + Convert.ToString (player2Score);
+                player2Label.Text = "BLUE: " + Convert.ToString (player2Score);
                 Refresh();
+                blueWallX = blueWallX + 35;
 
-                if(player2Score == gameWinScore)
+                if(blueWallX > this.Width / 2)
                 {
-                    GameOver("BLUE!");
+                    GameOver("RED!");
                 }
                 else
                 {
@@ -290,12 +299,13 @@ namespace Pong
             {
                 player.Play();
                 player1Score++;
-                player1Label.Text = "BLUE: " + Convert.ToString(player1Score);
+                player1Label.Text = "RED: " + Convert.ToString(player1Score);
                 Refresh();
+                redWallX = redWallX + 35;
 
-                if (player1Score == gameWinScore)
+                if (redWallX > this.Width / 2)
                 {
-                    GameOver("RED!");
+                    GameOver("BLUE!");
                 }
                 else
                 {
@@ -322,7 +332,7 @@ namespace Pong
             startLabel.Text = "SUCK IT " + winner ;
             Refresh();
             Thread.Sleep(2000);
-            startLabel.Text = "Play Again?";
+            startLabel.Text = "Play Again? Y / N";
 
         }
 
@@ -333,11 +343,22 @@ namespace Pong
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            drawBrush.Color = Color.Blue;
+
+            drawBrush.Color = Color.DarkRed;
+            e.Graphics.FillRectangle(drawBrush, 0, 0, redWallX, this.Height);
+            drawBrush.Color = Color.Red;
             e.Graphics.FillRectangle(drawBrush, PADDLE_EDGE, paddle1Y, PADDLE_WIDTH, PADDLE_LENGTH);
-            drawBrush.Color = Color.Red; 
+            
+            drawBrush.Color = Color.DarkBlue;
+            e.Graphics.FillRectangle(drawBrush, this.Width - blueWallX, 0, this.Width, this.Height);
+            drawBrush.Color = Color.Blue;
             e.Graphics.FillRectangle(drawBrush, (this.Width - PADDLE_WIDTH - PADDLE_EDGE), paddle2Y, PADDLE_WIDTH, PADDLE_LENGTH);
-            drawBrush.Color = Color.Plum;
+            
+            if (ballRed == true)
+            {
+                drawBrush.Color = Color.Red;
+            }
+            else { drawBrush.Color = Color.Blue; }
             e.Graphics.FillRectangle(drawBrush, ballX, ballY, BALL_SIZE, BALL_SIZE);
         }
 

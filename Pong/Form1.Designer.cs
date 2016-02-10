@@ -48,9 +48,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.startLabel.Font = new System.Drawing.Font("Courier New", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.startLabel.ForeColor = System.Drawing.Color.White;
-            this.startLabel.Location = new System.Drawing.Point(105, 114);
+            this.startLabel.Location = new System.Drawing.Point(131, 118);
             this.startLabel.Name = "startLabel";
-            this.startLabel.Size = new System.Drawing.Size(410, 93);
+            this.startLabel.Size = new System.Drawing.Size(364, 59);
             this.startLabel.TabIndex = 0;
             this.startLabel.Text = "Press Space To Start";
             this.startLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -77,9 +77,9 @@
             this.player1Label.ForeColor = System.Drawing.Color.White;
             this.player1Label.Location = new System.Drawing.Point(28, 2);
             this.player1Label.Name = "player1Label";
-            this.player1Label.Size = new System.Drawing.Size(98, 18);
+            this.player1Label.Size = new System.Drawing.Size(88, 18);
             this.player1Label.TabIndex = 2;
-            this.player1Label.Text = "BLUE :  0";
+            this.player1Label.Text = "RED :  0";
             // 
             // player2Label
             // 
@@ -89,21 +89,23 @@
             this.player2Label.ForeColor = System.Drawing.Color.White;
             this.player2Label.Location = new System.Drawing.Point(430, 2);
             this.player2Label.Name = "player2Label";
-            this.player2Label.Size = new System.Drawing.Size(98, 18);
+            this.player2Label.Size = new System.Drawing.Size(108, 18);
             this.player2Label.TabIndex = 3;
-            this.player2Label.Text = "RED  :  0";
+            this.player2Label.Text = "BLUE  :  0";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
+            this.BackgroundImage = global::Pong.Properties.Resources.RVB;
             this.ClientSize = new System.Drawing.Size(616, 450);
             this.Controls.Add(this.player2Label);
             this.Controls.Add(this.player1Label);
             this.Controls.Add(this.closeButton);
             this.Controls.Add(this.startLabel);
             this.DoubleBuffered = true;
+            this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
